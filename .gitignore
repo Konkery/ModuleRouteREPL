@@ -4,3 +4,6 @@
 
 /js/module/1.js
 /res/
+/node_modules
+/package.json
+/package-lock.json

@@ -83,7 +83,7 @@ class ProxyWS {
      * @param {[String]} keys список подписчиков на источник этого события 
      */
     Send(msg, keys) { 
-        this._WSS.Receive(msg, keys);
+        this._WSS.Notify(msg, keys);
     }
     /**
      * @method 

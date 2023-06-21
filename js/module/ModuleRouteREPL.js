@@ -23,6 +23,10 @@ class BaseRouteREPL {
             },
             toString: () => this.logs
         };
+
+        Object.on('repl-sub', () => {
+            if (!this._IsOn) this.RouteOn();
+        });
     }
     /**
      * Команда, по которой RouteREPL переназначает Master-устройство
@@ -40,11 +44,7 @@ class BaseRouteREPL {
      * которые осуществляют обмен данными между RoutREPL и внешней средой,
      * "repl-cm" который устанавливает новое значение мастера
      */
-    InitEvents() {
-        Object.on('repl-sub', () => {
-            if (!this._IsOn) this.RouteOn();
-        });
-
+    InitEvents() {       
         Object.on('repl-write', (commands, id) => {
             if (id === this._MasterID) {
                 commands.forEach(command => {

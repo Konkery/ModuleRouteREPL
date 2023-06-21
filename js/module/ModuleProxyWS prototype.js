@@ -14,74 +14,110 @@ class ProxyWS {
                       'sensor': [],
                       'process': []
         };
+        this.name = 'ProxyWS';
+        this._SubsID = {}; //{'MAS-1000': 'hfehklvhelv'}
 
-        Object.on('repl-sub', key => this._Subs.repl.push(key));          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
-        Object.on('sensor-sub', key => this._Subs.sensor.push(key));   
-        Object.on('process-sub', key => this._Subs.process.push(key));
-
-        Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
-            this.Send(msg, this._Subs.repl);    //отправкой на WS Server сообщения и списка подпищиков
+        Object.on('repl-sub', (id, key) => {
+            this._Subs.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
+            if (!(this._SubsID[id])) this._SubsID[id] = key;
+        });
+        Object.on('sensor-sub', key => {
+            this._Subs.sensor.push(key);
+            if (!(this._SubsID[id])) this._SubsID[id] = key;
+        });   
+        Object.on('process-sub', key => {
+            this._Subs.process.push(key);
+            if (!(this._SubsID[id])) this._SubsID[id] = key;
         });
 
-        Object.on('sensor-read', msg => {
-            this.Send(msg, this._Subs.sensor);
+        Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
+            this.Send(this.FormPackREPL(msg), this._Subs.repl);    //отправкой на WS Server сообщения и списка подпищиков
+        });
+
+        Object.on('sensor-read', msgs => {
+            this.Send(this.FormPackSensor(msgs), this._Subs.sensor);
+        });
+
+        Object.on('process-read', msg => {
+            return;
         });
     }
     /**
      * @method 
-     * Вызывается извне (со стороны WS)для передачи 
-     * @param {String} _data - строковое представление JSON пакета с командами
-     * @param {Function} [callback] - коллбэк который передаст в WSS извлеченный из пакета ID
+     * Вызывается извне (со стороны WS) для передачи команд
+     * @param {String} _data -  JSON пакет с командами в виде строки
+     * @param {String} [key] - ключ с которым WSS ассоциирует отправителя
      */
     Receive(_data, _key) {
-        let msg = _data;
+        let obj = null;
+        try {
+            obj = JSON.parse(_data);
+        } catch (e) {
+            throw new err('Incorrect JSON data');
+        }
         let key = _key;
         
-        let obj = null;
-        try {   
-            obj = JSON.parse(msg);
-        } catch (error) { return false; } //TODO: проработать отладку ошибки
         let meta_crc = obj.MetaData.CRC;
         delete obj.MetaData.CRC;
 
         let actual_crc = E.CRC32(JSON.stringify(obj));
 
         if (actual_crc === meta_crc) {  //если фактический CRC полученного пакета сходится с CRC зашитым в пакет
+            let flag = true;
 
             obj.MetaData.Command.forEach(comObj => {   //перебор объектов { "com": 'String', "arg": [] }
-                if (comObj.com.endsWith('sub')) Object.emit(comObj.com, key);
-                else if (comObj.com.endsWith('cm')) Object.emit(comObj.com, obj.MetaData.ID);
-                // else Object.emit(comObj.com, (comObj.arg[0] || obj.MetaData.ID), obj.MetaData.ID);
-                else Object.emit.apply(Object, [comObj.com].concat(comObj.arg, [obj.MetaData.ID]));
+                if (flag) {
+                    if (comObj.com.endsWith('sub') || comObj.com.endsWith('cm')) {
+                        Object.emit(comObj.com, obj.MetaData.ID, key);
+                        flag = false;
+                    }
+                    else Object.emit(comObj.com, comObj.arg, obj.MetaData.ID);
+                }
             }); 
-            return true;
         }
     }
     /**
      * @method
-     * Отправляет сообщение в виде JSON-строки в WS Server (В тестовой версии возможна передача просто строки) 
+     * Отправляет сообщение в виде JSON-строки в WS Server
      * @param {String} data сообщение 
      * @param {[String]} keys список подписчиков на источник этого события 
      */
-    Send(msg, keys) {
-        
+    Send(msg, keys) { 
         this._WSS.Receive(msg, keys);
+    }
+    /**
+     * @method 
+     * Удаление подписчика из коллекции по ключу
+     * @param {String} key 
+     */
+    RemoveSub(key) {
+        Object.values(this._Subs).forEach(subs => {
+            let i = subs.indexOf(key);
+            if (key !== -1) subs.splice(i, 1);
+        });
+        Object.entries(this._SubsID).forEach(pair => {
+            if (pair[1] === key) delete this._SubsID[pair[0]];
+        });
+        if (this._Subs.repl.length === 0) Object.emit('repl-cm', 'EWI');
     }
     /**
      * @method
      * Метод формирует пакет из сообщения, полученного от REPL 
      * @param {String} msg 
-     * @returns 
+     * @returns {String}
      */
     FormPackREPL(msg) {
-        return {
-            "Metadata":{
-                "Type":'controller',
-                "Repl":{
+        return JSON.stringify({
+            
+            "Metadata": {
+                "Type": "controller",
+                "ID": process.env.BOARD,
+                "TimeStamp2": ~~getTime(),
+                "Repl": {
                     "com":msg
                 }
             }
-        };
+        });
     }
     /**
      * @typedef {Object} SensorMsg
@@ -105,3 +141,4 @@ class ProxyWS {
         };
     }
 }
+exports = ProxyWS;

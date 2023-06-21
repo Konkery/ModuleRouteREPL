@@ -11,7 +11,7 @@ class BaseRouteREPL {
         this._IncrVal = 0;
         this._MasterID = 'EWI';     
         this._IsOn = false;     
-
+        this.name = 'BaseRouteREPL';
         this._Logs = {      //Кольцевой буффер максимальной длины max_i, в который помещаются все логи командой this._Logs.add()
             logs: [],
             i: 0,
@@ -45,8 +45,12 @@ class BaseRouteREPL {
             if (!this._IsOn) this.RouteOn();
         });
 
-        Object.on('repl-write', (command, id) => {
-            if (id === this._MasterID) this.Receive(`${command}\r`);
+        Object.on('repl-write', (commands, id) => {
+            if (id === this._MasterID) {
+                commands.forEach(command => {
+                    this.Receive(`${command}\r`);
+                });
+            }
         });
 
         Object.on('repl-cm', id => this.ChangeMaster(id));
@@ -59,7 +63,7 @@ class BaseRouteREPL {
     LoopbackBHandler(data) {
         this._DefConsole.write(' ' + data);
         let log = this.ToMsgPattern(data); //TODO: точно ли необходимо прогонять сообщение через ToMsgPattern ? 
-        this.emit('repl-read', log);
+        Object.emit('repl-read', log);
         this._Logs.add(log);
     }
     /**
@@ -123,7 +127,7 @@ class BaseRouteREPL {
     ChangeMaster(_id) {
         let id = _id;
         this._MasterID = id;
-        this.emit('repl-read', this.ToMsgPattern(`Info>> New MasterREPL, ID: ${this._MasterID}`));  //TODO: проверить насколько этот формат отправки сообщения соответствует общей методолгии
+        Object.emit('repl-read', this.ToMsgPattern(`Info>> New MasterREPL, ID: ${this._MasterID}`));  //TODO: проверить насколько этот формат отправки сообщения соответствует общей методолгии
     }
     /**
      * @method 

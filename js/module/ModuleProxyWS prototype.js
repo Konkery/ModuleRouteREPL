@@ -55,7 +55,6 @@ class ProxyWS {
         } catch (e) {
             throw new err('Incorrect JSON data');
         }
-        console.log(obj);
         let key = _key;
         
         let meta_crc = obj.MetaData.CRC;
@@ -71,7 +70,6 @@ class ProxyWS {
                     if (comObj.com.endsWith('sub') || comObj.com.endsWith('cm')) {
                         Object.emit(comObj.com, obj.MetaData.ID, key);
                         flag = false;
-                        console.log('emited');
                     }
                     else Object.emit(comObj.com, comObj.arg, obj.MetaData.ID);
                 }

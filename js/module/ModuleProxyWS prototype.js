@@ -108,7 +108,6 @@ class ProxyWS {
      */
     FormPackREPL(msg) {
         return JSON.stringify({
-            
             "Metadata": {
                 "Type": "controller",
                 "ID": process.env.BOARD,
@@ -130,7 +129,7 @@ class ProxyWS {
      * @param {SensorMsg} msg 
      */
     FormPackSensor(msg) {
-        return {
+        return  JSON.stringify({
             "Metadata":{
                 "Type":'controller',
                 "ID": process.env.BOARD,
@@ -149,7 +148,7 @@ class ProxyWS {
                 }
             },
             "Value": E.getTemperature()
-        };
+        });
     }
 }
 exports = ProxyWS;

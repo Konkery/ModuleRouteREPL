@@ -21,7 +21,7 @@ class ProxyWS {
             this._Subs.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
             if (!(this._SubsID[id])) this._SubsID[id] = key;
         });
-        Object.on('sensor-sub', key => {
+        Object.on('sensor-sub', (id, key) => {
             this._Subs.sensor.push(key);
             if (!(this._SubsID[id])) this._SubsID[id] = key;
         });   

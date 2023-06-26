@@ -133,11 +133,22 @@ class ProxyWS {
         return {
             "Metadata":{
                 "Type":'controller',
+                "ID": process.env.BOARD,
+                "TimeStamp2": ~~getTime(),
                 "Sensor": {
-                    "Name": msg.name
+                    "ID": '54-54',
+                    "Name": "Vova",
+                    "Type": "meas",
+                    "TypeOutSignal": "analog",
+                    "TypeInSignal":  "analog",
+                    "NumPortsRequired": [1],
+                    "NumChannel":       1,
+                    "Bus":              [
+                                            "i2c"
+                                        ]
                 }
             },
-            "Value": msg.value
+            "Value": E.getTemperature()
         };
     }
 }

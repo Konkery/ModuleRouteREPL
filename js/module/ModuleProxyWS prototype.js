@@ -25,7 +25,7 @@ class ProxyWS {
             this._Subs.sensor.push(key);
             if (!(this._SubsID[id])) this._SubsID[id] = key;
         });   
-        Object.on('process-sub', key => {
+        Object.on('process-sub', (id, key) => {
             this._Subs.process.push(key);
             if (!(this._SubsID[id])) this._SubsID[id] = key;
         });
@@ -34,8 +34,8 @@ class ProxyWS {
             this.Send(this.FormPackREPL(msg), this._Subs.repl);    //отправкой на WS Server сообщения и списка подпищиков
         });
 
-        Object.on('sensor-read', msgs => {
-            this.Send(this.FormPackSensor(msgs), this._Subs.sensor);
+        Object.on('sensor-read', msg => {
+            this.Send(this.FormPackSensor(msg), this._Subs.sensor);
         });
 
         Object.on('process-read', msg => {
@@ -147,7 +147,7 @@ class ProxyWS {
                                         ]
                 }
             },
-            "Value": E.getTemperature()
+            "Value": msg
         });
     }
 }

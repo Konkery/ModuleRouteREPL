@@ -91,10 +91,10 @@ class ProxyWS {
      * @param {String} key 
      */
     RemoveSub(key) {
-        this._Sub.forEach(subs => {
+        for (const k in this._Sub) {
             let i = subs.indexOf(key);
             if (key !== -1) subs.splice(i, 1);
-        });
+        };
         for (let k of this._SubID) {
             if (this._SubID[k] === key) delete this._SubID[k];
         };

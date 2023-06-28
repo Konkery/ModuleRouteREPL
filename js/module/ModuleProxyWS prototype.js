@@ -111,7 +111,7 @@ class ProxyWS {
             "Metadata": {
                 "Type": "controller",
                 "ID": process.env.BOARD,
-                "TimeStamp2": ~~getTime(),
+                "TimeStamp2": getTime(),
                 "Repl": {
                     "com":msg
                 }
@@ -133,7 +133,7 @@ class ProxyWS {
             "Metadata":{
                 "Type":'controller',
                 "ID": process.env.BOARD,
-                "TimeStamp2": ~~getTime(),
+                "TimeStamp2": getTime(),
                 "Sensor": {
                     "ID": '54-54',
                     "Name": "Vova",

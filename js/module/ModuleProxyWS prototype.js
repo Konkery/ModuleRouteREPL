@@ -10,32 +10,32 @@ class ProxyWS {
      */
     constructor(_wss) {
         this._WSS = _wss;
-        this._Subs = {'repl': [],
+        this._Sub = {'repl': [],
                       'sensor': [],
                       'process': []
         };
         this.name = 'ProxyWS';
-        this._SubsID = {}; //{'MAS-1000': 'hfehklvhelv'}
+        this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}
 
         Object.on('repl-sub', (id, key) => {
-            this._Subs.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
-            if (!(this._SubsID[id])) this._SubsID[id] = key;
+            this._Sub.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
+            if (!(this._SubID[id])) this._SubID[id] = key;
         });
         Object.on('sensor-sub', (id, key) => {
-            this._Subs.sensor.push(key);
-            if (!(this._SubsID[id])) this._SubsID[id] = key;
+            this._Sub.sensor.push(key);
+            if (!(this._SubID[id])) this._SubID[id] = key;
         });   
         Object.on('process-sub', (id, key) => {
-            this._Subs.process.push(key);
-            if (!(this._SubsID[id])) this._SubsID[id] = key;
+            this._Sub.process.push(key);
+            if (!(this._SubID[id])) this._SubID[id] = key;
         });
 
         Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
-            this.Send(this.FormPackREPL(msg), this._Subs.repl);    //отправкой на WS Server сообщения и списка подпищиков
+            this.Send(this.FormPackREPL(msg), this._Sub.repl);    //отправкой на WS Server сообщения и списка подпищиков
         });
 
         Object.on('sensor-read', msg => {
-            this.Send(this.FormPackSensor(msg), this._Subs.sensor);
+            this.Send(this.FormPackSensor(msg), this._Sub.sensor);
         });
 
         Object.on('process-read', msg => {
@@ -91,14 +91,14 @@ class ProxyWS {
      * @param {String} key 
      */
     RemoveSub(key) {
-        Object.values(this._Subs).forEach(subs => {
+        this._Sub.forEach(subs => {
             let i = subs.indexOf(key);
             if (key !== -1) subs.splice(i, 1);
         });
-        Object.entries(this._SubsID).forEach(pair => {
-            if (pair[1] === key) delete this._SubsID[pair[0]];
-        });
-        if (this._Subs.repl.length === 0) Object.emit('repl-cm', 'EWI');
+        for (let k of this._SubID) {
+            if (this._SubID[k] === key) delete this._SubID[k];
+        };
+        if (this._Sub.repl.length === 0) Object.emit('repl-cm', 'EWI');
     }
     /**
      * @method

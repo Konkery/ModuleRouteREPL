@@ -114,9 +114,10 @@ class ProxyWS {
                 "ID": process.env.BOARD,
                 "TimeStamp2": getTime(),
                 "Repl": {
-                    "com":msg
+                    "com":""
                 }
-            }
+            },
+            "Value": msg
         });
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);

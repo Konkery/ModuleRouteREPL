@@ -92,7 +92,7 @@ class ProxyWS {
      */
     RemoveSub(key) {
         for (const k in this._Sub) {
-            let i = subs.indexOf(key);
+            let i = this._Sub[k].indexOf(key);
             if (key !== -1) subs.splice(i, 1);
         };
         for (let k of this._SubID) {

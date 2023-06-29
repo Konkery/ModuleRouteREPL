@@ -109,7 +109,7 @@ class ProxyWS {
      */
     FormPackREPL(msg) {
         let pack = JSON.stringify({
-            "Metadata": {
+            "MetaData": {
                 "Type": "controller",
                 "ID": process.env.BOARD,
                 "TimeStamp2": getTime(),
@@ -136,7 +136,7 @@ class ProxyWS {
      */
     FormPackSensor(msg) {
         let pack = JSON.stringify({
-            "Metadata":{
+            "MetaData":{
                 "Type":'controller',
                 "ID": process.env.BOARD,
                 "TimeStamp2": getTime(),

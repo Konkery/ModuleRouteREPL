@@ -15,7 +15,7 @@ class ProxyWS {
                       'process': []
         };
         this.name = 'ProxyWS';
-        this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}
+        this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
 
         Object.on('repl-sub', (id, key) => {
             this._Sub.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
@@ -107,7 +107,7 @@ class ProxyWS {
      * @returns {String}
      */
     FormPackREPL(msg) {
-        return JSON.stringify({
+        let pack = JSON.stringify({
             "Metadata": {
                 "Type": "controller",
                 "ID": process.env.BOARD,
@@ -117,6 +117,11 @@ class ProxyWS {
                 }
             }
         });
+        let crc = E.CRC32(pack);
+        pack = JSON.parse(pack);
+        pack.MetaData.CRC = crc;
+        // return pack;
+        return JSON.stringify(pack);
     }
     /**
      * @typedef {Object} SensorMsg
@@ -129,7 +134,7 @@ class ProxyWS {
      * @param {SensorMsg} msg 
      */
     FormPackSensor(msg) {
-        return  JSON.stringify({
+        let pack = JSON.stringify({
             "Metadata":{
                 "Type":'controller',
                 "ID": process.env.BOARD,
@@ -142,13 +147,16 @@ class ProxyWS {
                     "TypeInSignal":  "analog",
                     "NumPortsRequired": [1],
                     "NumChannel":       1,
-                    "Bus":              [
-                                            "i2c"
-                                        ]
+                    "Bus":              ["i2c"]
                 }
             },
             "Value": msg
         });
+        let crc = E.CRC32(pack);
+        pack = JSON.parse(pack);
+        pack.MetaData.CRC = crc;
+        // return pack;
+        return JSON.stringify(pack);
     }
 }
 exports = ProxyWS;

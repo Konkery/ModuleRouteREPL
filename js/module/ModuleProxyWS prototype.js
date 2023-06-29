@@ -111,7 +111,7 @@ class ProxyWS {
         let pack = JSON.stringify({
             "MetaData": {
                 "Type": "controller",
-                "ID": process.env.BOARD,
+                "ID": process.env.SERIAL,
                 "TimeStamp2": getTime(),
                 "Repl": {
                     "com":""
@@ -119,6 +119,7 @@ class ProxyWS {
             },
             "Value": msg
         });
+        return pack;
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);
         pack.MetaData.CRC = crc;
@@ -139,7 +140,7 @@ class ProxyWS {
         let pack = JSON.stringify({
             "MetaData":{
                 "Type":'controller',
-                "ID": process.env.BOARD,
+                "ID": process.env.SERIAL,
                 "TimeStamp2": getTime(),
                 "Sensor": {
                     "ID": '54-54',
@@ -154,6 +155,7 @@ class ProxyWS {
             },
             "Value": msg
         });
+        return pack;
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);
         pack.MetaData.CRC = crc;

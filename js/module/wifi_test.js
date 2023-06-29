@@ -131,13 +131,13 @@ class ClassEsp8266WiFi {
                     console.log("IP: "+info.ip);            
                 });
             });
-            this.wifi.scan((err, ap_list) => {
-                if (err) {
-                    console.log("Connection error: "+err);
-                    throw err;
-                  }
-                  console.log(ap_list);
-            });        
+            // this._wifi.scan((err, ap_list) => {
+            //     if (err) {
+            //         console.log("Connection error: "+err);
+            //         throw err;
+            //       }
+            //       console.log(ap_list);
+            // });        
         }
     }
     /**

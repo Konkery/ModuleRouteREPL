@@ -18,15 +18,15 @@ class ProxyWS {
         this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
 
         Object.on('repl-sub', (id, key) => {
-            this._Sub.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
+            if (!this._Sub.repl.includes(key)) this._Sub.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
             if (!(this._SubID[id])) this._SubID[id] = key;
         });
         Object.on('sensor-sub', (id, key) => {
-            this._Sub.sensor.push(key);
+            if (!this._Sub.sensor.includes(key)) this._Sub.sensor.push(key);
             if (!(this._SubID[id])) this._SubID[id] = key;
         });   
         Object.on('process-sub', (id, key) => {
-            this._Sub.process.push(key);
+            if (!this._Sub.process.includes(key)) this._Sub.process.push(key);
             if (!(this._SubID[id])) this._SubID[id] = key;
         });
 

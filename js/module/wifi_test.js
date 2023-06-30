@@ -147,24 +147,24 @@ class ClassEsp8266WiFi {
      */
     Connect() {
         if (process.env.BOARD === "ISKRAJS") {
-            let wifi = require("https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassBaseWIFIesp8266.min.js").setup(Serial3, function (err) {
+            let _wifi = require("https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassBaseWIFIesp8266.min.js").setup(Serial3, function (err) {
                 if (err) {
                     console.log('Module connection error! ' + err);
                 }
-                wifi.connect (this.ssid, this.pass, function (err) {
+                _wifi.connect (this.ssid, this.pass, function (err) {
                     if (err) {
                         console.log(this.ssid + " " +  this.pass + '\nConnection failed! ' + err);
                     }
                     else {
                         console.log('Connected to ' + this.ssid);
                         // Бип! - добавить метод на писк бипера
-                        wifi.getIP(function (emsg, ipAdress) {
+                        _wifi.getIP(function (emsg, ipAdress) {
                             if (emsg) {
                                 throw new err (emsg, this.ecode);
                             }
                             console.log("IP: " + ipAdress);
                         });
-                        //this.wifi = wifi;
+                        //this._wifi = _wifi;
                         //this.AddToList();
                     }
                 })            
@@ -199,7 +199,7 @@ class ClassEsp8266WiFi {
      */
     GetIP() {
         let _ip;
-        this.wifi.getIP(function (emsg, ipAdress) {
+        this._wifi.getIP(function (emsg, ipAdress) {
             if (emsg) {
                 throw new err (emsg, this.ecode);
             }
@@ -214,7 +214,7 @@ class ClassEsp8266WiFi {
      */
     GetAPs() {
         let _aps;
-        this.wifi.getAPs(function (emsg, aps) {
+        this._wifi.getAPs(function (emsg, aps) {
             if (emsg) {
                 throw new err (emsg, this.ecode);
             }
@@ -230,7 +230,7 @@ class ClassEsp8266WiFi {
      */
     GetVersion() {
         let _ver;
-        this.wifi.getVersion(function(emsg, version) {
+        this._wifi.getVersion(function(emsg, version) {
             if (emsg) {
                 throw new err (emsg, this.ecode);
             }
@@ -251,7 +251,7 @@ class ClassEsp8266WiFi {
      */
     CreateAP(_ssid, _pass, _chan, _enc) {
         let _res = 'AP created';
-        this.wifi.createAP(_ssid, _pass, _chan, _enc, function(emsg) {
+        this._wifi.createAP(_ssid, _pass, _chan, _enc, function(emsg) {
             if (emsg) {
                 throw new err (emsg, this.ecode);
             }
@@ -267,7 +267,7 @@ class ClassEsp8266WiFi {
      */
     GetConnectedDevices() {
         let _devs;
-        this.wifi.getConnectedDevices (function (emsg, devices) {
+        this._wifi.getConnectedDevices (function (emsg, devices) {
             if (emsg) {
                 throw new err (emsg, this.ecode);
             }

@@ -121,7 +121,7 @@ class ProxyWS {
             },
             "Value": msg
         });
-        return pack;
+        return encodeURIComponent(pack);
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);
         pack.MetaData.CRC = crc;

@@ -31,11 +31,11 @@ class ProxyWS {
         });
 
         Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
-            this.Send(this.FormPackREPL(msg), this._Sub.repl);    //отправкой на WS Server сообщения и списка подпищиков
+            this.Send(msg, 'repl');    //отправкой на WS Server сообщения и списка подпищиков
         });
 
         Object.on('sensor-read', msg => {
-            this.Send(this.FormPackSensor(msg), this._Sub.sensor);
+            this.Send(msg, 'sensor');
         });
 
         Object.on('process-read', msg => {
@@ -82,8 +82,10 @@ class ProxyWS {
      * @param {String} data сообщение 
      * @param {[String]} keys список подписчиков на источник этого события 
      */
-    Send(msg, keys) { 
-        this._WSS.Notify(msg, keys);
+    Send(msg, type) { 
+
+        if (type === 'repl') this._WSS.Notify(this.FormPackREPL(msg), this._Sub.repl);
+        else if (type === 'sensor') this._WSS.Notify(this.FormPackSensor(msg), this._Sub.sensor);
     }
     /**
      * @method 
@@ -108,7 +110,6 @@ class ProxyWS {
      * @returns {String}
      */
     FormPackREPL(msg) {
-        return msg;
         let pack = JSON.stringify({
             "MetaData": {
                 "Type": "controller",

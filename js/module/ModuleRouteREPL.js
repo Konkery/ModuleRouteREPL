@@ -62,9 +62,8 @@ class BaseRouteREPL {
      */
     LoopbackBHandler(data) {
         this._DefConsole.write(' ' + data);
-        let log = this.ToMsgPattern(data); //TODO: точно ли необходимо прогонять сообщение через ToMsgPattern ? 
-        Object.emit('repl-read', log);
-        this._Logs.add(log);
+        Object.emit('repl-read', encodeURIComponent(data));
+        this._Logs.add(data);
     }
     /**
      * @method
@@ -112,7 +111,7 @@ class BaseRouteREPL {
      */
     Receive(_command) {
         if (!this._IsOn) return false; 
-        let command = _command;
+        let command = decodeURIComponent(_command);
         this._Logs.add(command);
         Object.emit('repl-read', command);  //"отзеркаливание" входного сообщения
         // TODO: продумать необходмимо ли дополнительно обрамлять отзеркаливаемое сообщение

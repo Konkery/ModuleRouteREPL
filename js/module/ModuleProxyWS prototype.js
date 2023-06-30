@@ -108,6 +108,7 @@ class ProxyWS {
      * @returns {String}
      */
     FormPackREPL(msg) {
+        return msg;
         let pack = JSON.stringify({
             "MetaData": {
                 "Type": "controller",

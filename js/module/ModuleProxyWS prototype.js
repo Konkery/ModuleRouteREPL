@@ -83,7 +83,6 @@ class ProxyWS {
      * @param {[String]} keys список подписчиков на источник этого события 
      */
     Send(msg, type) { 
-        return;
         if (type === 'repl') this._WSS.Notify(this.FormPackREPL(msg), this._Sub.repl);
         else if (type === 'sensor') this._WSS.Notify(this.FormPackSensor(msg), this._Sub.sensor);
     }

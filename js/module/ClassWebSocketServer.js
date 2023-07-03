@@ -48,7 +48,7 @@ class ClassWSServer {
                 console.log('Closed ' + ws.key.hashed);
             });
         }
-
+        
         this.port = 8080 || this.port;
         this.server = require('ws').createServer(pageHandler);
         this.server.listen(this.port);
@@ -60,9 +60,8 @@ class ClassWSServer {
      * Вызовом этого метода WSS получает данные и список ключей, по которому определяюся клиенты, 
      * которым необходимо отправить данные. 
      * @param {Object} data 
-     * @param {Function} callback
      */
-    Notify(data, callback) {
+    Notify(data) {
         // data is JSON pack
         let service = data.MetaData.RegServices;
         this.clients.filter(client => client.regServices.includes(service)).forEach(client => {

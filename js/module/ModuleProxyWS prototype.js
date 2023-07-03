@@ -10,13 +10,11 @@ class ProxyWS {
      */
     constructor(_wss) {
         this._WSS = _wss;
-        this._Sub = {'repl': [],
-                      'sensor': [],
-                      'process': []
-        };
+        this._Queue = [];
         this.name = 'ProxyWS';
         this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
-
+        this._QueueCallbackBind = this.QueueCallback.bind(this);
+        
         Object.on('repl-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
                 if (!client.regServices.includes('repl')) client.regServices.push('repl');
@@ -40,11 +38,11 @@ class ProxyWS {
         });
 
         Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
-            this.Send(msg, 'repl');    //отправкой на WS Server сообщения и списка подпищиков
+            this.Send(this.FormPackREPL(msg));   
         });
 
         Object.on('sensor-read', msg => {
-            this.Send(msg, 'sensor');
+            this.Send(this.FormPackSensor(msg));
         });
 
         Object.on('process-read', msg => {
@@ -89,12 +87,21 @@ class ProxyWS {
      * @method
      * Отправляет сообщение в виде JSON-строки в WS Server
      * @param {String} data сообщение 
-     * @param {[String]} keys список подписчиков на источник этого события 
      */
-    Send(msg, type) { 
-        return;
-        if (type === 'repl') this._WSS.Notify(this.FormPackREPL(msg), this._Sub.repl);
-        else if (type === 'sensor') this._WSS.Notify(this.FormPackSensor(msg), this._Sub.sensor);
+    Send(msg) { 
+        if (this._Queue.length === 0) {
+            this._WSS.Notify(msg, this._QueueCallbackBind);
+        } else {
+            this._Queue.push(msg);
+        }
+    }
+    QueueCallback(e) {
+        if (e) throw new err('Some error in Send');
+        
+        if (this._Queue.length) {
+            let msg = this._Queue.shift();
+            this._WSS.Notify(msg);
+        }
     }
     /**
      * @method 
@@ -116,7 +123,7 @@ class ProxyWS {
      * @method
      * Метод формирует пакет из сообщения, полученного от REPL 
      * @param {String} msg 
-     * @returns {String}
+     * @returns {Object}
      */
     FormPackREPL(msg) {
         let pack = ({

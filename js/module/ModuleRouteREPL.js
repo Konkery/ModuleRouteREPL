@@ -12,17 +12,6 @@ class BaseRouteREPL {
         this._MasterID = 'EWI';     
         this._IsOn = false;     
         this.name = 'BaseRouteREPL';
-        this._Logs = {      //Кольцевой буффер максимальной длины max_i, в который помещаются все логи командой this._Logs.add()
-            logs: [],
-            i: 0,
-            max_i: 15,
-            add: function(log) {
-                this.logs[this.i] = log;
-                this.i++;
-                if (this.i === this.max_i) this.i = 0;
-            },
-            toString: () => this.logs
-        };
 
         Object.on('repl-sub', () => {
             if (!this._IsOn) this.RouteOn();
@@ -63,7 +52,6 @@ class BaseRouteREPL {
     LoopbackBHandler(data) {
         this._DefConsole.write(' ' + data);
         Object.emit('repl-read', encodeURIComponent(data));
-        this._Logs.add(data);
     }
     /**
      * @method
@@ -76,12 +64,12 @@ class BaseRouteREPL {
         if (data === '\r') {
             let command = this._InBuffer;
             this._InBuffer = '';
-            this._Logs.add(command);
 
             if (this._MasterID === 'EWI') this.Receive(command);
             
-            else if (command.indexOf(this.NEW_MASTER_COMMAND) !== -1) 
+            else if (command.indexOf(this.NEW_MASTER_COMMAND) !== -1) {
                 this.ChangeMaster('EWI');
+            }
         }
     }
     /**
@@ -112,7 +100,6 @@ class BaseRouteREPL {
     Receive(_command) {
         if (!this._IsOn) return false; 
         let command = decodeURIComponent(_command);
-        this._Logs.add(command);
         Object.emit('repl-read', command);  //"отзеркаливание" входного сообщения
         // TODO: продумать необходмимо ли дополнительно обрамлять отзеркаливаемое сообщение
         LoopbackB.write(command);
@@ -126,7 +113,7 @@ class BaseRouteREPL {
     ChangeMaster(_id) {
         let id = _id;
         this._MasterID = id;
-        Object.emit('repl-read', this.ToMsgPattern(`Info>> New MasterREPL, ID: ${this._MasterID}`));  //TODO: проверить насколько этот формат отправки сообщения соответствует общей методолгии
+        this._DefConsole.write('repl-read', this.ToMsgPattern(`Info>> New MasterREPL, ID: ${this._MasterID}`));  //TODO: проверить насколько этот формат отправки сообщения соответствует общей методолгии
     }
     /**
      * @method 

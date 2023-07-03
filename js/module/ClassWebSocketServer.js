@@ -60,13 +60,15 @@ class ClassWSServer {
      * Вызовом этого метода WSS получает данные и список ключей, по которому определяюся клиенты, 
      * которым необходимо отправить данные. 
      * @param {Object} data 
+     * @param {Function} callback
      */
-    Notify(data) {
+    Notify(data, callback) {
         // data is JSON pack
         let service = data.MetaData.RegServices;
         this.clients.filter(client => client.regServices.includes(service)).forEach(client => {
             client.send(encodeURIComponent(JSON.stringify(data)));
         });
+        callback();
     }
 }
 

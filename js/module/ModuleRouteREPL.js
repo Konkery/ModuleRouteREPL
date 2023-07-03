@@ -51,7 +51,7 @@ class BaseRouteREPL {
      */
     LoopbackBHandler(data) {
         this._DefConsole.write(' ' + data);
-        Object.emit('repl-read', encodeURIComponent(data));
+        Object.emit('repl-read', data);
     }
     /**
      * @method
@@ -94,12 +94,11 @@ class BaseRouteREPL {
     /**
      * @method
      * Через этот метод RouteREPL получает команду к непосредственно выполнению.
-     * @param {String} _command - команда, которая передается в REPL
+     * @param {String} command - команда, которая передается в REPL
      * @returns 
      */
-    Receive(_command) {
+    Receive(command) {
         if (!this._IsOn) return false; 
-        let command = decodeURIComponent(_command);
         Object.emit('repl-read', command);  //"отзеркаливание" входного сообщения
         // TODO: продумать необходмимо ли дополнительно обрамлять отзеркаливаемое сообщение
         LoopbackB.write(command);
@@ -110,8 +109,7 @@ class BaseRouteREPL {
      * Метод, который меняет текущего мастера
      * @param {String} id - идентификатор нового мастера
      */
-    ChangeMaster(_id) {
-        let id = _id;
+    ChangeMaster(id) {
         this._MasterID = id;
         this._DefConsole.write('repl-read', this.ToMsgPattern(`Info>> New MasterREPL, ID: ${this._MasterID}`));  //TODO: проверить насколько этот формат отправки сообщения соответствует общей методолгии
     }
@@ -127,14 +125,12 @@ class BaseRouteREPL {
     /**
      * @method
      * Формирует выходное сообщение
-     * @param {String} _string - Текст сообщения
-     * @param {String} [_id] - ID отправителя
+     * @param {String} string - Текст сообщения
+     * @param {String} [id] - ID отправителя
      * @returns {String}
      */
-    ToMsgPattern(_string, _id) {
+    ToMsgPattern(str, id) {
         // TODO: код ниже задокументирован до принятия решения касательно форматирования исходящих сообщений
-        let str = _string;
-        let id = _id;
         // if (id) return `${this.IncrID} <${id}> ${str}}`;
 
         // return `${this.IncrID} ${str}`;

@@ -65,7 +65,7 @@ class ClassWSServer {
         // data is JSON pack
         let service = data.MetaData.RegServices;
         this.clients.filter(client => client.regServices.includes(service)).forEach(client => {
-            client.send(encodeURIComponent(JSON.stringify(data)));
+            client.send(JSON.stringify(data));
         });
         // callback();
     }

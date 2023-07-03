@@ -90,18 +90,6 @@ class ProxyWS {
      */
     Send(msg) { 
         this._WSS.Notify(msg);
-        // this._Queue.push(msg)
-        // if (this._Queue.length === 1) {
-        //     this._WSS.Notify(msg, this._QueueCallbackBind);
-        // }
-    }
-    QueueCallback(e) {
-        if (e) throw new err('Some error in Send');
-        
-        if (this._Queue.length) {
-            let msg = this._Queue.shift();
-            this._WSS.Notify(msg, this._QueueCallbackBind);
-        }
     }
     /**
      * @method 
@@ -109,11 +97,6 @@ class ProxyWS {
      * @param {String} key 
      */
     RemoveSub(key) {
-        let i = 0;
-        for (const k in this._Sub) {
-            i = this._Sub[k].indexOf(key);
-            if (i !== -1) this._Sub[k].splice(i, 1);
-        };
         for (let k of this._SubID) {
             if (this._SubID[k] === key) delete this._SubID[k];
         };

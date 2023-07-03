@@ -99,7 +99,7 @@ class ProxyWS {
         
         if (this._Queue.length) {
             let msg = this._Queue.shift();
-            this._WSS.Notify(msg);
+            this._WSS.Notify(msg, this._QueueCallbackBind);
         }
     }
     /**

@@ -89,12 +89,10 @@ class ProxyWS {
      * @param {String} data сообщение 
      */
     Send(msg) { 
-        this._WSS.Notify(msg);
-        // if (this._Queue.length === 0) {
-        //     this._WSS.Notify(msg, this._QueueCallbackBind);
-        // } else {
-        //     this._Queue.push(msg);
-        // }
+        this._Queue.push(msg)
+        if (this._Queue.length === 1) {
+            this._WSS.Notify(msg, this._QueueCallbackBind);
+        }
     }
     QueueCallback(e) {
         if (e) throw new err('Some error in Send');

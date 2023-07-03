@@ -14,7 +14,7 @@ class ProxyWS {
         this.name = 'ProxyWS';
         this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
         this._QueueCallbackBind = this.QueueCallback.bind(this);
-        
+
         Object.on('repl-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
                 if (!client.regServices.includes('repl')) client.regServices.push('repl');
@@ -89,11 +89,12 @@ class ProxyWS {
      * @param {String} data сообщение 
      */
     Send(msg) { 
-        if (this._Queue.length === 0) {
-            this._WSS.Notify(msg, this._QueueCallbackBind);
-        } else {
-            this._Queue.push(msg);
-        }
+        this._WSS.Notify(msg);
+        // if (this._Queue.length === 0) {
+        //     this._WSS.Notify(msg, this._QueueCallbackBind);
+        // } else {
+        //     this._Queue.push(msg);
+        // }
     }
     QueueCallback(e) {
         if (e) throw new err('Some error in Send');

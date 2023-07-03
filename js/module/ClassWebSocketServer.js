@@ -68,7 +68,7 @@ class ClassWSServer {
         this.clients.filter(client => client.regServices.includes(service)).forEach(client => {
             client.send(encodeURIComponent(JSON.stringify(data)));
         });
-        callback();
+        //callback();
     }
 }
 

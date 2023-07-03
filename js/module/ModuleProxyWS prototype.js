@@ -125,7 +125,8 @@ class ProxyWS {
                 "TimeStamp2": getTime(),
                 "Repl": {
                     "com":""
-                }
+                },
+                "RegServices": "repl"
             },
             "Value": msg
         });
@@ -152,6 +153,7 @@ class ProxyWS {
                 "Type":'controller',
                 "ID": process.env.SERIAL,
                 "TimeStamp2": getTime(),
+                "RegServices": "sensor",
                 "Sensor": {
                     "ID": '54-54',
                     "Name": "Vova",

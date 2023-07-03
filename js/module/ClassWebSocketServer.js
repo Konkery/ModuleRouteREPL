@@ -35,14 +35,16 @@ class ClassWSServer {
 
         function wsHandler(ws) {
             console.log('Connection established!\nKey: '+ ws.key.hashed);
+            ws.regServices = [];
             this.clients.push(ws);
+
             ws.on('message', message => {
                 this.proxy.Receive(message, ws.key.hashed);
             });
             ws.on('close', () => {
                 let index = this.clients.indexOf(ws);
                 this.clients.splice(index,1);
-                this.proxy.RemoveSub(ws.key.hashed);
+                //this.proxy.RemoveSub(ws.key.hashed);
                 console.log('Closed ' + ws.key.hashed);
             });
         }
@@ -57,12 +59,13 @@ class ClassWSServer {
      * @method
      * Вызовом этого метода WSS получает данные и список ключей, по которому определяюся клиенты, 
      * которым необходимо отправить данные. 
-     * @param {String} data 
-     * @param {[String]} keys 
+     * @param {Object} data 
      */
-    Notify(data, keys) {
-        this.clients.filter(client => keys.includes(client.key.hashed)).forEach(client => {
-            client.send(data);
+    Notify(data) {
+        // data is JSON pack
+        let service = data.MetaData.RegServices;
+        this.clients.filter(client => client.regServices.includes(service)).forEach(client => {
+            client.send(encodeURIComponent(JSON.stringify(data)));
         });
     }
 }

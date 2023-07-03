@@ -18,15 +18,24 @@ class ProxyWS {
         this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
 
         Object.on('repl-sub', (id, key) => {
-            if (!this._Sub.repl.includes(key)) this._Sub.repl.push(key);          //ID клиента, подписавшегося на REPL, добавляется в коллекцию
+            this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
+                if (!client.regServices.includes('repl')) client.regServices.push('repl');
+            });
+
             if (!(this._SubID[id])) this._SubID[id] = key;
         });
         Object.on('sensor-sub', (id, key) => {
-            if (!this._Sub.sensor.includes(key)) this._Sub.sensor.push(key);
+            this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
+                if (!client.regServices.includes('sensor')) client.regServices.push('sensor');
+            });
+
             if (!(this._SubID[id])) this._SubID[id] = key;
         });   
         Object.on('process-sub', (id, key) => {
-            if (!this._Sub.process.includes(key)) this._Sub.process.push(key);
+            this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
+                if (!client.regServices.includes('process')) client.regServices.push('process');
+            });
+
             if (!(this._SubID[id])) this._SubID[id] = key;
         });
 
@@ -109,7 +118,7 @@ class ProxyWS {
      * @returns {String}
      */
     FormPackREPL(msg) {
-        let pack = JSON.stringify({
+        let pack = ({
             "MetaData": {
                 "Type": "controller",
                 "ID": process.env.SERIAL,
@@ -120,7 +129,7 @@ class ProxyWS {
             },
             "Value": msg
         });
-        return encodeURIComponent(pack);
+        return pack;
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);
         pack.MetaData.CRC = crc;
@@ -138,7 +147,7 @@ class ProxyWS {
      * @param {SensorMsg} msg 
      */
     FormPackSensor(msg) {
-        let pack = JSON.stringify({
+        let pack = ({
             "MetaData":{
                 "Type":'controller',
                 "ID": process.env.SERIAL,
@@ -156,7 +165,7 @@ class ProxyWS {
             },
             "Value": msg
         });
-        return encodeURIComponent(pack);
+        return pack;
         let crc = E.CRC32(pack);
         pack = JSON.parse(pack);
         pack.MetaData.CRC = crc;

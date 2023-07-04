@@ -88,7 +88,10 @@ class ProxyWS {
      * @param {String} data сообщение 
      */
     Send(msg) { 
-        this._WSS.Notify(msg);
+        let data = this.FormPackREPL(msg);
+        data.MetaData.CRC = E.CRC32(JSON.stringify(data));
+        this._WSS.Notify(data);
+        
     }
     /**
      * @method 
@@ -99,7 +102,7 @@ class ProxyWS {
         for (let k of this._SubID) {
             if (this._SubID[k] === key) delete this._SubID[k];
         };
-        if (this._Sub.repl.length === 0) Object.emit('repl-cm', 'EWI');
+        if (Object.keys(this._SubID).length === 0) Object.emit('repl-cm', 'EWI');
     }
     /**
      * @method

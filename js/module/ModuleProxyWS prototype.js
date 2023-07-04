@@ -16,21 +16,21 @@ class ProxyWS {
 
         Object.on('repl-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
-                if (!client.regServices.includes('repl')) client.regServices.push('repl');
+                if (!client.RegServices.includes('repl')) client.RegServices.push('Repl');
             });
 
             if (!(this._SubID[id])) this._SubID[id] = key;
         });
         Object.on('sensor-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
-                if (!client.regServices.includes('sensor')) client.regServices.push('sensor');
+                if (!client.RegServices.includes('sensor')) client.RegServices.push('Sensor');
             });
 
             if (!(this._SubID[id])) this._SubID[id] = key;
         });   
         Object.on('process-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {
-                if (!client.regServices.includes('process')) client.regServices.push('process');
+                if (!client.RegServices.includes('process')) client.RegServices.push('Process');
             });
 
             if (!(this._SubID[id])) this._SubID[id] = key;
@@ -116,7 +116,7 @@ class ProxyWS {
                 "Repl": {
                     "com":""
                 },
-                "RegServices": "repl"
+                "RegServices": "Repl"
             },
             "Value": msg
         });
@@ -140,7 +140,7 @@ class ProxyWS {
                 "Type":'controller',
                 "ID": process.env.SERIAL,
                 "TimeStamp2": getTime(),
-                "RegServices": "sensor",
+                "RegServices": "Sensor",
                 "Sensor": {
                     "ID": '54-54',
                     "Name": "Vova",

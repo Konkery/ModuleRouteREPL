@@ -62,9 +62,9 @@ class ClassWSServer {
      * @param {Object} data - JSON-объект соответствующий LHP протоколу
      */
     Notify(data) {
-        let service = JSON.parse(data).MetaData.RegServices;
+        let service = data.MetaData.RegServices;
         this.clients.filter(client => client.RegServices.includes(service)).forEach(client => {
-            client.send(data);
+            client.send(JSON.stringify(data));
         });
     }
 }

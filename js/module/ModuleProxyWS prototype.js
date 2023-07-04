@@ -108,7 +108,7 @@ class ProxyWS {
      * @returns {Object}
      */
     FormPackREPL(msg) {
-        return JSON.stringify({
+        return ({
             "MetaData": {
                 "Type": "controller",
                 "ID": process.env.SERIAL,

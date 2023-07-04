@@ -108,7 +108,7 @@ class ProxyWS {
      * @returns {Object}
      */
     FormPackREPL(msg) {
-        let pack = ({
+        return ({
             "MetaData": {
                 "Type": "controller",
                 "ID": process.env.SERIAL,
@@ -135,7 +135,7 @@ class ProxyWS {
      * @param {SensorMsg} msg 
      */
     FormPackSensor(msg) {
-        let pack = ({
+        return ({
             "MetaData":{
                 "Type":'controller',
                 "ID": process.env.SERIAL,

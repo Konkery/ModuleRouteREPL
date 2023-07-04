@@ -13,7 +13,6 @@ class ProxyWS {
         this._Queue = [];
         this.name = 'ProxyWS';
         this._SubID = {}; //{'MAS-1000': 'hfehklvhelv'}      
-        this._QueueCallbackBind = this.QueueCallback.bind(this);
 
         Object.on('repl-sub', (id, key) => {
             this._WSS.clients.filter(client => client.key.hashed === key).forEach(client => {

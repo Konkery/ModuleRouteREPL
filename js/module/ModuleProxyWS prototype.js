@@ -109,7 +109,7 @@ class ProxyWS {
      * @returns {Object}
      */
     FormPackREPL(msg) {
-        return ({
+        let pack = ({
             "MetaData": {
                 "Type": "controller",
                 "ID": process.env.SERIAL,
@@ -121,11 +121,9 @@ class ProxyWS {
             },
             "Value": msg
         });
-        let crc = E.CRC32(pack);
-        pack = JSON.parse(pack);
+        let crc = E.CRC32(JSON.stringify(pack));
         pack.MetaData.CRC = crc;
-        // return pack;
-        return JSON.stringify(pack);
+        return pack;
     }
     /**
      * @typedef {Object} SensorMsg
@@ -138,7 +136,7 @@ class ProxyWS {
      * @param {SensorMsg} msg 
      */
     FormPackSensor(msg) {
-        return ({
+        let pack = ({
             "MetaData":{
                 "Type":'controller',
                 "ID": process.env.SERIAL,
@@ -157,12 +155,9 @@ class ProxyWS {
             },
             "Value": msg
         });
-        return pack;
-        let crc = E.CRC32(pack);
-        pack = JSON.parse(pack);
+        let crc = E.CRC32(JSON.stringify(pack));
         pack.MetaData.CRC = crc;
-        // return pack;
-        return JSON.stringify(pack);
+        return pack;
     }
 }
 exports = ProxyWS;

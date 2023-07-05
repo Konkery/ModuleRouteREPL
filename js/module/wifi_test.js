@@ -94,8 +94,8 @@ class ClassEsp8266WiFi {
                                 }                               
                             });
                         });
-                        this.ssid = 'Gorizont-Zero';
-                        this.pass = 'gorizont#zero';
+                        // this.ssid = 'Gorizont-Zero';
+                        // this.pass = 'gorizont#zero';
                         this._wifi.connect (this.ssid, this.pass, (err) => {
                             if (err) {
                                 console.log(this.ssid + '\nConnection failed! ' + err);

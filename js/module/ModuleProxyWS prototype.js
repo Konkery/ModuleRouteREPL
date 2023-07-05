@@ -37,11 +37,11 @@ class ProxyWS {
         });
 
         Object.on('repl-read', msg => {         //обработка события repl-read перехватом сообщения от REPL 
-            this.Send(this.FormPackREPL(msg));   
+            this.Send(msg);   
         });
 
         Object.on('sensor-read', msg => {
-            this.Send(this.FormPackSensor(msg));
+            this.Send(msg);
         });
 
         Object.on('process-read', msg => {

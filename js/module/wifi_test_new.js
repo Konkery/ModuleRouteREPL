@@ -155,7 +155,3 @@ class ClassEsp8266WiFi {
 }
 
 exports = ClassEsp8266WiFi;
-
-require('Wifi').scan((err, aplist) => {
-    console.log(aplist);
-});

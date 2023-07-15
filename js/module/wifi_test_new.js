@@ -108,7 +108,7 @@ class ClassEsp8266WiFi {
             });
         }
         else {
-            this.InitBus(_rx, _tx);
+            //this.InitBus(_rx, _tx);
             let pass;
             this._wifi = require("https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassBaseWIFIesp8266.min.js").setup(Serial3, (err) => {
                 if (err) {

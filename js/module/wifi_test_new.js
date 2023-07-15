@@ -34,7 +34,7 @@ class ClassEsp8266WiFi {
      * @param {Object} _rx      - порт rx шины UART, обязательное поле
      * @param {Object} _tx      - порт tx шины UART, обязательное поле
      */// удалить, потом добавить в конфигурацию. Основа - ESP32
-    constructor(_rx, _tx) {
+    constructor(_bus) {
         //реализация паттерна синглтон
         if (this.Instance) {
             return this.Instance;
@@ -47,7 +47,7 @@ class ClassEsp8266WiFi {
         this._bus = undefined;
         this._ssid = undefined;
         this._ip = undefined;
-        this.Init(_rx, _tx);
+        this.Init(_bus);
 	}
     /**
      * @method
@@ -69,7 +69,7 @@ class ClassEsp8266WiFi {
      * @param {Object} _rx      - порт rx шины UART, нужен для запуска шины
      * @param {Object} _tx      - порт tx шины UART, нужен для запуска шины
      */
-    Init(_rx, _tx) {
+    Init(_bus) {
         if (process.env.MODULES.includes("Wifi")) {
             this._wifi = require("Wifi");
             let pass;
@@ -109,9 +109,9 @@ class ClassEsp8266WiFi {
         }
         else {
             //this.InitBus(_rx, _tx);
-            Serial3.setup(115200);
+            let bus = _bus;
             let pass;
-            this._wifi = require("https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassBaseWIFIesp8266.min.js").setup(Serial3, (err) => {
+            this._wifi = require("https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassBaseWIFIesp8266.min.js").setup(bus, (err) => {
                 if (err) {
                     throw err;
                 }

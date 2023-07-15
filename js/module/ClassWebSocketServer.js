@@ -32,7 +32,7 @@ class ClassWSServer {
             res.writeHead(404, {'Content-Type': 'text/html'});
             res.end('<html><body>404 - Not supported format</body></html>');
         }
-
+        // Обработчик появления нового подключения
         function wsHandler(ws) {
             console.log('Connection established!\nKey: '+ ws.key.hashed);
             ws.RegServices = [];
@@ -41,10 +41,10 @@ class ClassWSServer {
             ws.on('message', message => {
                 this.proxy.Receive(message, ws.key.hashed);
             });
-            ws.on('close', () => {
+            ws.on('close', () => {      //при разрыве подключения, список подключений обновляется
                 let index = this.clients.indexOf(ws);
                 this.clients.splice(index,1);
-                this.proxy.RemoveSub(ws.key.hashed);
+                this.proxy.RemoveSub(ws.key.hashed);    //также ProxyWS уповещается о потере одного клиента
                 console.log('Closed ' + ws.key.hashed);
             });
         }
@@ -62,10 +62,10 @@ class ClassWSServer {
      * @param {Object} data - JSON-объект соответствующий LHP протоколу
      */
     Notify(data) {
-        let service = data.MetaData.RegServices;
+        let service = data.MetaData.RegServices;    //служба, от которой пришло сообщение указывается в пакете
         this.clients.filter(client => client.RegServices.includes(service)).forEach(client => {
-            client.send(JSON.stringify(data));
-        });
+            client.send(JSON.stringify(data));      //клиент которому требуется отправить данные определяется
+        });                                         //по наличию соответствующей службы в клиенте 
     }
 }
 

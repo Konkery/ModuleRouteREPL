@@ -58,14 +58,13 @@ class BaseRouteREPL {
      * Обработчик события, вызываемого по поступлению данных со стандартной консоли
      */
     DefConsoleHandler(data) {
-        // TODO: timeout to clear command line
         this._DefConsole.write(data); 
-        this._InBuffer += data;
+        this._InBuffer += data;             //заполнение буффера введеными символами
         if (data === '\r') {
             let command = this._InBuffer;
             this._InBuffer = '';
 
-            if (this._MasterID === 'EWI') this.Receive(command);
+            if (this._MasterID === 'EWI') this.Receive(command);  //проверка на то что была введена команда смены мастера
             
             else if (command.indexOf(this.NEW_MASTER_COMMAND) !== -1) {
                 this.ChangeMaster('EWI');

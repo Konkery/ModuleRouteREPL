@@ -63,10 +63,10 @@ class ProxyWS {
         }
         let key = _key;
         
-        let meta_crc = obj.MetaData.CRC;
+        let meta_crc = obj.MetaData.CRC;    //чексумма, полученная из пакета
         delete obj.MetaData.CRC;
 
-        let actual_crc = E.CRC32(JSON.stringify(obj));
+        let actual_crc = E.CRC32(JSON.stringify(obj));  //фактическая чексумма
 
         if (actual_crc === meta_crc) {  //если фактический CRC полученного пакета сходится с CRC зашитым в пакет
             let flag = true;
@@ -89,8 +89,8 @@ class ProxyWS {
      */
     Send(msg) { 
         let data = this.FormPackREPL(msg);
-        data.MetaData.CRC = E.CRC32(JSON.stringify(data));
-        this._WSS.Notify(data);
+        data.MetaData.CRC = E.CRC32(JSON.stringify(data)); //расчет чексуммы
+        this._WSS.Notify(data);         //отправка на WS Server
         
     }
     /**

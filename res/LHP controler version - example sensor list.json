@@ -1,0 +1,25 @@
+{ 
+    "TimeStamp":    122465768,
+    "MetaData":     {                   
+                        "Type":"controller",
+                        "ID": "cc50e35a-a916",
+                        "TimeStamp2": 122465768.32423,                       
+                        "RegServices": "Sensor",                        
+                        "Sensor": {
+                            "ID": "00-00-000-0-0",
+                            "com": "sensor-list",
+                            "arg": []   
+                        },
+                        "Process": {
+                            "com":          "get-time",
+                            "arg":          []
+                        },
+                        "Repl": {
+                            "com": "",
+                            "arg": []
+                        },
+
+                        "CRC": 123123414
+                    },
+    "Value":        "C%22IDsupplier%22%3A%5B%7B%22Amperka%22%3A%22AMP-B072%22%7D%5D%2C%22HelpSens%22%3A%22Proximity%20and%20light%20sensor%20(Troyka-module)%22%7D%7D%2C%7B%22ID%22%3A%2201-01-001-1-2%22%2C%22Name%22%3A%22VL6180%22%2C%22Type%22%3A%22sensor%22%2C%22TypeInSignal%22%3A%22analog%22%2C%22TypeOutSignal%22%3A%22digital%22%2C%22NumPortsRequired%22%3A%5B2%5D%2C%22QuantityChannel%22%3A2%2C%22NumChannel%22%3A2%2C%22NameChannel%22%3A%22light%22%2C%22Bus%22%3A%5B%22i2c%22%5D%2C%22ManufacturingData%22%3A%7B%22IDManufacturing%22%3A%5B%7B%22Amperka%22%3A%22AMP-B072%22%7D%5D%2C%22IDsupplier%22%3A%5B%7B%22Amperka%22%3A%22AMP-B072%22%7D%5D%2C%22HelpSens%22%3A%22Proximity%20and%20light%20sensor%20(Troyka-module)%22%7D%7D%2C%7B%22ID%22%3A%2201-01-001-0-1%22%2C%22Name%22%3A%22GL5528%22%2C%22Type%22%3A%22sensor%22%2C%22TypeInSignal%22%3A%22analog%22%2C%22TypeOutSignal%22%3A%22analog%22%2C%22NumPortsRequired%22%3A%5B1%5D%2C%22QuantityChannel%22%3A1%2C%22NumChannel%22%3A1%2C%22NameChannel%22%3A%22light%22%2C%22Bus%22%3A%5B%22none%22%5D%2C%22ManufacturingData%22%3A%7B%22IDManufacturing%22%3A%5B%7B%22Amperka%22%3A%22AMP-B004%22%7D%5D%2C%22IDsupplier%22%3A%5B%7B%22Amperka%22%3A%22A"
+}

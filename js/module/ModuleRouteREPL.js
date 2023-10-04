@@ -4,14 +4,14 @@
  * Прием сообщений происходит по воозникновению события 'repl-write'.
  * Отзеркаливание и передача данных из REPL происходит по событию ''repl-read.  
  */
-class BaseRouteREPL {
+class ClassRouteREPL {
     constructor() {                         
         this._InBuffer = '';
         this._DefConsole = eval(E.getConsole()); // eval позволяет хранить инстанциированный объект UART шины. Это необходимо для работы с его функционалом из класса Route 
         this._IncrVal = 0;
         this._MasterID = 'EWI';     
         this._IsOn = false;     
-        this.name = 'BaseRouteREPL';
+        this._Name = 'RouteREPL';
 
         Object.on('repl-sub', () => {
             if (!this._IsOn) this.RouteOn();
@@ -29,7 +29,7 @@ class BaseRouteREPL {
     get IncrID() { return ++this._IncrVal; }
     /**
      * @method
-     * Метод запускает обработку событий "repl-sub", "repl-write",
+     * Метод включает обработку событий "repl-cm", "repl-write",
      * которые осуществляют обмен данными между RoutREPL и внешней средой,
      * "repl-cm" который устанавливает новое значение мастера
      */
@@ -137,4 +137,4 @@ class BaseRouteREPL {
         return str;
     }
 }
-exports = BaseRouteREPL;
+exports = ClassRouteREPL;

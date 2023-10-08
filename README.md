@@ -7,18 +7,16 @@
 # Описание
 <div style = "font-family: 'Open Sans', sans-serif; font-size: 16px; color: #555">
 
-ModuleRouteREPL - один из модулей, обеспечивающий коммуникацию между автономной платформой и внешней средой в рамках фреймворка EcoLight. 
-Берёт управление над средствами REPL (интерактивной консоли) в Espruino Web IDE (далее - EWI): перехватывает, фильтрует и пересылает входящие и исходящие сообщения. Работает в качестве службы, на которую пользователю со стороны Websocket сервера необходимо подписаться чтобы запустить процесс получения сообщений. Таким образом RouteREPL реализует паттерн Observer (один источник - много слушателей).
-Перехват и рассылка выполняется по событийной модели. Список событий приведен ниже.
+ModuleRouteREPL - модуль, предназначенный для контроля над средствами REPL (интерактивной консоли) в Espruino WEB IDE (далее - EWI): перехватывата, форматирования, фильтрации и пересылки входящих и исходящих сообщений. 
+Модуль является частью фреймворка Ecolight и используется для замены EWI на внешний терминал, реализованный на NODE-RED, что позволяет сделать платформу действительно автономной, обеспечив многофункциональную коммуникацию между ней и NODE-RED сервером. 
 
-<div align='center'>
-    <img src=''>
-</div>
+Работает в качестве службы, на которую пользователю со стороны сервера необходимо подписаться для запуска процесса получения сообщений. Таким образом RouteREPL реализует паттерн Observer. Количество подписчиков ограничено лишь возможностями сервера, но по-умолчанию все подписчики назначаются SLAVE-устройствами, и **RouteREPL** отбрасывает сообщения от них. Для начала двунаправленного обмена необходимо назначить одного из подписчиков MASTER-устройством. MASTER-а можно сменить в любой момент.
+Перехват и рассылка выполняется по событийной модели. Список событий приведен ниже.
 
 ### **Конструктор**
 Объект создается как глобальная переменная:
 ```js
-ClassRouteREPL = require("");
+ClassRouteREPL = require("ModuleRouteREPL");
 RouteREPL = new ClassRouteREPL();
 ```
 
@@ -53,7 +51,7 @@ RouteREPL = new ClassRouteREPL();
 ### **Приницип перехвата консоли**
 По умолчанию передача данных на консоль или с неё выглядит так:
 <div align='center'>
-    <img src='./res/console default.png' alt='Image not found'>
+    <img src='./res/console_default-2.png' alt='Image not found'>
 </div>
 Для реализации функционала *RouteREPL* необходимо перехватить поток передачи данных и провести его уже через обработчики модуля.
 
@@ -74,18 +72,18 @@ defConsole.on('data', data => {
 ```
 Тогда диаграмма взаимодействия компонентов будет выглядеть так:
 <div align='center'>
-    <img src='./res/console interceped.png' alt='Image not found'>
+    <img src='./res/console_interceped-2.png' alt='Image not found'>
 </div>
 
 ### **Примеры**
 Запуск системы для обмена между консолью и Websocket сервером
 ```js
 //импорт модулей
-const ClassWifi = require('https://raw.githubusercontent.com/AlexGlgr/ModuleMiddleWIFIesp8266/fork-Alexander/js/module/ClassMiddleWIFIesp8266.min.js');
-const ClassUARTbus = require ('https://raw.githubusercontent.com/AlexGlgr/ModuleBaseUARTbus/fork-Alexander/js/module/ClassBaseUARTBus.min.js');
-const ClassWSS = require('https://raw.githubusercontent.com/AlexGlgr/ModuleWebSocketServer/fork-Alexander/js/module/ClassWebSocketServer.min.js');
-const ProxyWS = require('https://raw.githubusercontent.com/Nicktonious/ModuleBaseRouteREPL/fork-nikita/js/module/ModuleProxyWS%20prototype.min.js');
-const ClassRouteREPL = require('https://raw.githubusercontent.com/Nicktonious/ModuleBaseRouteREPL/fork-nikita/js/module/ModuleRouteREPL.min.js');
+const ClassWifi = require('ModuleWifi');
+const ClassUARTbus = require ('ModuleBaseUARTbus');
+const ClassWSS = require('ModuleWebSocketServer');
+const ProxyWS = require('ModuleProxyWS');
+const ClassRouteREPL = require('ModuleRouteREPL');
 
 let wifi;
 let server;
@@ -107,7 +105,7 @@ try {
     }, 7000);
 
 } catch(e) {
-        console.log('Error!' + e);
+    console.log('Error!' + e);
 }
 ```
 Далее необходимо отправить с сервера команды:
@@ -121,4 +119,7 @@ ws.send(`{"MetaData":{"ID":"nikita","Command":[{"com":"repl-cm","arg":[]}],"CRC"
 ws.send('{"MetaData":{"ID":"nikita","Command":[{"com":"repl-write","arg":["console.log(`5454`)"]}],"CRC":1231993470}}');
 ```
 
+### **Зависимости**
+- <mark style="background-color: lightblue">ModuleAppError</mark> как **err**;
+- <mark style="background-color: lightblue">ModuleProxyWS</mark> как **ProxyWS**.
 </div>

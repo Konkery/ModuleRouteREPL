@@ -144,8 +144,8 @@ ws.send('{"MetaData":{"ID":"nikita","Command":[{"com":"repl-write","arg":["conso
 ### Зависимости
 <div style = "color: #555">
 
-- <mark style="background-color: lightblue">ModuleAppError</mark>
-- <mark style="background-color: lightblue">ModuleProxyWS</mark>
+- <mark style="background-color: lightblue">[ModuleAppError](https://github.com/Konkery/ModuleAppError)</mark>
+- <mark style="background-color: lightblue">[ModuleProxyWS](https://github.com/Konkery/ModuleProxyWS)</mark>
 </div>
 
 </div>

@@ -8,7 +8,9 @@
 </div>
 
 ## Лицензия
-////
+<div style = "color: #555">
+    В разработке
+</div>
 
 ## Описание
 <div style = "color: #555">
@@ -25,8 +27,8 @@
 
 Объект создается как глобальная переменная:
 ```js
-ClassRouteREPL = require("ModuleRouteREPL.min.js");
-RouteREPL = new ClassRouteREPL();
+let ClassRouteREPL = require("ModuleRouteREPL.min.js");
+let RouteREPL = new ClassRouteREPL();
 ```
 </div>
 
@@ -43,7 +45,7 @@ RouteREPL = new ClassRouteREPL();
 ### События
 <div style = "color: #555">
 
-События, которые перехватывает *RouteREPL*:
+События, которые перехватывает **RouteREPL**:
 - <mark style="background-color: lightblue">'repl-sub'</mark> - появление нового подписчика. Обработчик запускает работу RouteREPL, вызовом метода *RouteOn()*;
 - <mark style="background-color: lightblue">'repl-write'</mark> - пришли команды на REPL. Обработчик отпраляет команды на исполнение если они пришли от мастер-устройства; 
 - <mark style="background-color: lightblue">'repl-cm'</mark> - смена мастера. Обработчик обновляет значение поля *_MasterID*; 

@@ -1,8 +1,11 @@
 <div style = "font-family: 'Open Sans', sans-serif; font-size: 16px">
 
 # ModuleRouteREPL
-
-////
+<div style = "color: #555">
+    <p align="center">
+    <img src="./res/logo.png" width="400" title="hover text">
+    </p>
+</div>
 
 ## Лицензия
 ////
@@ -10,7 +13,7 @@
 ## Описание
 <div style = "color: #555">
 
-Модуль RouteREPL предназначен для контроля над средствами REPL (интерактивной консоли) в Espruino WEB IDE (далее - EWI): перехватывата, форматирования, фильтрации и пересылки входящих и исходящих сообщений. 
+Модуль RouteREPL предназначен для контроля над средствами REPL (интерактивной консоли) в Espruino WEB IDE (далее - EWI): перехвата, форматирования, фильтрации и пересылки входящих и исходящих сообщений. 
 Модуль является частью фреймворка EcoLight и используется для замены EWI на внешний терминал, реализованный на NODE-RED, что позволяет сделать платформу действительно автономной, обеспечив многофункциональную коммуникацию между ней и NODE-RED сервером. 
 
 Работает в качестве службы, на которую пользователю со стороны сервера необходимо подписаться для запуска процесса получения сообщений. Таким образом RouteREPL реализует паттерн Observer. Количество подписчиков ограничено лишь возможностями сервера, но по-умолчанию все подписчики назначаются SLAVE-устройствами, и **RouteREPL** отбрасывает сообщения от них. Для начала двунаправленного обмена необходимо назначить одного из подписчиков MASTER-устройством. MASTER-а можно сменить в любой момент.
@@ -41,13 +44,14 @@ RouteREPL = new ClassRouteREPL();
 <div style = "color: #555">
 
 События, которые перехватывает *RouteREPL*:
-- <mark style="background-color: lightblue">Object.on('repl-sub')</mark> - появление нового подписчика. Обработчик запускает работу RouteREPL, вызовом метода *RouteOn()*;
-- <mark style="background-color: lightblue">Object.on('repl-write')</mark> - пришли команды на REPL. Обработчик отпраляет команды на исполнение если они пришли от мастер-устройства; 
-- <mark style="background-color: lightblue">Object.on('repl-cm')</mark> - смена мастера. Обработчик обновляет значение поля *_MasterID*; 
+- <mark style="background-color: lightblue">'repl-sub'</mark> - появление нового подписчика. Обработчик запускает работу RouteREPL, вызовом метода *RouteOn()*;
+- <mark style="background-color: lightblue">'repl-write'</mark> - пришли команды на REPL. Обработчик отпраляет команды на исполнение если они пришли от мастер-устройства; 
+- <mark style="background-color: lightblue">'repl-cm'</mark> - смена мастера. Обработчик обновляет значение поля *_MasterID*; 
 - <mark style="background-color: lightblue">LoopbackB.on('data')</mark> - перехват и обработка данных, поступающих с REPL (Замечание! Имеется ввиду REPL как часть EWI но не модуль RouteREPL);
 - <mark style="background-color: lightblue">[_DefConsole].on('data')</mark> - перехват и обработка данных, поступающих с консоли. Явялется событием шины, которая сохраняется в поле *_DefConsole*.
 
-- <mark style="background-color: lightblue">Object.on('repl-read')</mark> - событие, которое вызывает *RouteREPL* при выводе данных в консоль. Это событие далее перехватывает *ProxyWS*.
+События, которые инициирует **RouteREPL**:
+- <mark style="background-color: lightblue">'repl-read'</mark> - вывод данных в консоль.
 </div>
 
 ### Методы
@@ -100,11 +104,11 @@ defConsole.on('data', data => {
 Запуск системы для обмена между консолью и Websocket сервером
 ```js
 //импорт модулей
-const ClassWifi = require('ModuleWifi');
-const ClassUARTbus = require ('ModuleBaseUARTbus');
-const ClassWSS = require('ModuleWebSocketServer');
-const ProxyWS = require('ModuleProxyWS');
-const ClassRouteREPL = require('ModuleRouteREPL');
+const ClassRouteREPL = require('ModuleRouteREPL.min.js');
+const ClassWifi    = require('ModuleWifi.min.js');
+const ClassUARTbus = require ('ModuleBaseUARTbus.min.js');
+const ClassWSS     = require('ModuleWebSocketServer.min.js');
+const ProxyWS      = require('ModuleProxyWS.min.js');
 
 let wifi;
 let server;

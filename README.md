@@ -102,7 +102,7 @@ defConsole.on('data', data => {
 //импорт модулей
 const ClassRouteREPL = require('ModuleRouteREPL.min.js');
 const ClassWifi    = require('ModuleWifi.min.js');
-const ClassUARTbus = require ('ModuleBaseUARTbus.min.js');
+const ClassUARTbus = require('ModuleBaseUARTbus.min.js');
 const ClassWSS     = require('ModuleWebSocketServer.min.js');
 const ProxyWS      = require('ModuleProxyWS.min.js');
 

@@ -2,4 +2,8 @@
 .vscode/*
 *.code-workspace
 
-#app-test*.js
+/js/module/1.js
+/node_modules
+/package.json
+/package-lock.json
+/js/app/app-test-pseudosensor.js
